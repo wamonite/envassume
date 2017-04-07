@@ -12,57 +12,92 @@ import boto3
 import subprocess
 
 
-class ScriptException(Exception):
+class EnvAssumeException(Exception):
     pass
 
 
-def do_env_assume():
+def parse_arguments(arg_list):
     role_arn = os.environ.get('AWS_ASSUME_ROLE')
     if role_arn:
         if len(sys.argv) <= 1:
-            raise ScriptException('no command supplied')
+            raise EnvAssumeException('no command supplied')
 
-        cmd_list = sys.argv[1:]
+        command_list = arg_list[1:]
 
     else:
         if len(sys.argv) <= 2:
-            raise ScriptException('not enough arguments')
+            raise EnvAssumeException('not enough arguments')
 
-        role_arn = sys.argv[1]
-        cmd_list = sys.argv[2:]
+        role_arn = arg_list[1]
+        command_list = arg_list[2:]
+
+    return role_arn, command_list
+
+
+def assume_role(role_arn, external_id = None, session_name = None):
+    if not external_id:
+        external_id = os.environ.get('AWS_EXTERNAL_ID')
+
+    if not session_name:
+        session_name = 'env_assume-' + gethostname()
 
     request = {
         'RoleArn': role_arn,
-        'RoleSessionName': 'env_assume-' + gethostname()
+        'RoleSessionName': session_name
     }
 
-    external_id = os.environ.get('AWS_EXTERNAL_ID')
     if external_id:
         request['ExternalId'] = external_id
 
-    boto_session = boto3.Session()
-    sts_client = boto_session.client('sts')
+    boto3_session = boto3.Session()
+    sts_client = boto3_session.client('sts')
     response = sts_client.assume_role(**request)
 
-    credentials = response.get('Credentials')
+    return response.get('Credentials')
+
+
+def update_env(credentials_lookup):
     credentials_list = (
         ('AccessKeyId', 'AWS_ACCESS_KEY_ID'),
         ('SecretAccessKey', 'AWS_SECRET_ACCESS_KEY'),
         ('SessionToken', 'AWS_SESSION_TOKEN'),
     )
     for credential_key, env_var_name in credentials_list:
-        os.environ[env_var_name] = credentials[credential_key]
-
-    subprocess.check_call(cmd_list)
+        os.environ[env_var_name] = credentials_lookup[credential_key]
 
 
-if __name__ == "__main__":
+def run_command(command_list):
     try:
-        do_env_assume()
+        subprocess.check_call(command_list)
+
+    except subprocess.CalledProcessError as e:
+        return e.returncode
+
+    return 0
+
+
+def run():
+    role_arn, command_list = parse_arguments(sys.argv)
+
+    credentials_lookup = assume_role(role_arn)
+
+    update_env(credentials_lookup)
+
+    return run_command(command_list)
+
+
+def run_script():
+    try:
+        exit_code = run()
+        sys.exit(exit_code)
 
     except Exception as e:
-        print('Error:{}: {}'.format(e.__class__.__name__, e), file = sys.stderr)
+        print('Error({}) {}'.format(e.__class__.__name__, e), file = sys.stderr)
         sys.exit(1)
 
     except KeyboardInterrupt:
         pass
+
+
+if __name__ == "__main__":
+    run_script()
