@@ -1,4 +1,7 @@
 *~
 *.pyc
 *.pyo
+.eggs
+*.egg-info
+.tox
 .idea
