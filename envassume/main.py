@@ -23,11 +23,11 @@ def pop_argument(arg_list):
 
 
 def parse_arguments(arg_list):
-    _ = pop_argument(arg_list)
+    pop_argument(arg_list)
 
     external_id = None
     if arg_list[0] in ('-i', '--external-id'):
-        _ = pop_argument(arg_list)
+        pop_argument(arg_list)
         external_id = pop_argument(arg_list)
 
     role_arn = os.environ.get('AWS_ASSUME_ROLE')
@@ -35,7 +35,7 @@ def parse_arguments(arg_list):
         role_arn = pop_argument(arg_list)
 
     if arg_list[0] == '--':
-        _ = pop_argument(arg_list)
+        pop_argument(arg_list)
 
     return role_arn, external_id, arg_list
 
