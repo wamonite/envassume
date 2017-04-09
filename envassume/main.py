@@ -14,25 +14,30 @@ class EnvAssumeException(Exception):
     pass
 
 
+def pop_argument(arg_list):
+    try:
+        return arg_list.pop(0)
+
+    except IndexError:
+        raise EnvAssumeException('Not enough arguments')
+
+
 def parse_arguments(arg_list):
+    _ = pop_argument(arg_list)
+
+    external_id = None
+    if arg_list[0] in ('-i', '--external-id'):
+        _ = pop_argument(arg_list)
+        external_id = pop_argument(arg_list)
+
     role_arn = os.environ.get('AWS_ASSUME_ROLE')
-    if role_arn:
-        if len(arg_list) <= 1:
-            raise EnvAssumeException('No arguments supplied')
-
-        arg_list = arg_list[1:]
-
-    else:
-        if len(arg_list) <= 2:
-            raise EnvAssumeException('Not enough arguments')
-
-        role_arn = arg_list[1]
-        arg_list = arg_list[2:]
+    if not role_arn:
+        role_arn = pop_argument(arg_list)
 
     if arg_list[0] == '--':
-        arg_list = arg_list[1:]
+        _ = pop_argument(arg_list)
 
-    return role_arn, arg_list
+    return role_arn, external_id, arg_list
 
 
 def assume_role(role_arn, external_id = None, session_name = None):
@@ -54,7 +59,7 @@ def assume_role(role_arn, external_id = None, session_name = None):
     sts_client = boto3_session.client('sts')
     response = sts_client.assume_role(**request)
 
-    return response.get('Credentials')
+    return response.get('Credentials') or {}
 
 
 def update_env(credentials_lookup):
@@ -78,9 +83,9 @@ def run_command(arg_list):
 
 
 def run():
-    role_arn, arg_list = parse_arguments(sys.argv)
+    role_arn, external_id, arg_list = parse_arguments(sys.argv)
 
-    credentials_lookup = assume_role(role_arn)
+    credentials_lookup = assume_role(role_arn, external_id)
 
     update_env(credentials_lookup)
 
