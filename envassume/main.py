@@ -7,6 +7,7 @@ from __future__ import print_function
 import os
 from socket import gethostname
 import boto3
+from botocore.exceptions import ParamValidationError
 from .exceptions import *
 from .arguments import parse_arguments
 from .usage import *
@@ -29,7 +30,11 @@ def assume_role(role_arn, external_id = None, session_name = None):
 
     boto3_session = boto3.Session()
     sts_client = boto3_session.client('sts')
-    response = sts_client.assume_role(**request)
+    try:
+        response = sts_client.assume_role(**request)
+
+    except ParamValidationError as e:
+        raise EnvAssumeException(e.message)
 
     return response.get('Credentials') or {}
 
