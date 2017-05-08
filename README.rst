@@ -10,23 +10,15 @@ Usage
 
     usage: envassume [-h] [-i EXTERNAL_ID] [ARN] command [argument [argument ...]]
 
-    positional arguments:
-
-        command                 command to run
-        argument                command arguments
-
     optional arguments:
         -h, --help              show this help message and exit
         -i, --id EXTERNAL_ID    external id
-        ARN                     ARN to assume (if not set by environment variable)
+        ARN                     ARN to assume (required if not set by environment variable)
 
-Environment Variables
----------------------
-
-* `AWS_ASSUME_ROLE=ARN`
-    `ARN` and options cannot be set if this is defined
-* `AWS_ASSUME_ID=EXTERNAL_ID`
-    external id
+    environment variables:
+        AWS_ASSUME_ROLE=ARN
+            no options can be present before the command if this is defined
+        AWS_ASSUME_ID=EXTERNAL_ID
 
 License
 -------

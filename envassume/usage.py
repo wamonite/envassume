@@ -11,15 +11,15 @@ def print_help(short = False):
     print('usage: envassume [-h] [-i EXTERNAL_ID] [ARN] command [argument [argument ...]]', file = sys.stderr)
     if not short:
         print('''
-positional arguments:
-
-    command                 command to run
-    argument                command arguments
-
 optional arguments:
     -h, --help              show this help message and exit
     -i, --id EXTERNAL_ID    external id
-    ARN                     ARN to assume (if not set by environment variable)
+    ARN                     ARN to assume (required if not set by environment variable)
+
+environment variables:
+    AWS_ASSUME_ROLE=ARN
+        no options can be present before the command if this is defined
+    AWS_ASSUME_ID=EXTERNAL_ID
 ''', file = sys.stderr)
 
 
