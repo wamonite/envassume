@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from envassume.arguments import parse_arguments
+from envassume.exceptions import *
 import pytest
 from attr import attrs, attrib, validators
 
@@ -29,3 +30,12 @@ def test_parse_args(arg_list, parse_args_result):
     assert result.get('external_id') == parse_args_result.external_id
     assert result.get('cache') == parse_args_result.cache
     assert result.get('command') == parse_args_result.command
+
+
+@pytest.mark.parametrize('arg_list, exception', [
+    ([], EnvAssumeMissingArnException),
+    (['--'], EnvAssumeMissingArnException),
+])
+def test_parse_args_errors(arg_list, exception):
+    with pytest.raises(exception):
+        parse_arguments(['arg0'] + arg_list)

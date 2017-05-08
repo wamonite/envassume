@@ -4,12 +4,12 @@ envassume
 """
 
 from __future__ import print_function
-import sys
 import os
 from socket import gethostname
 import boto3
 from .exceptions import *
 from .arguments import parse_arguments
+from .usage import *
 
 
 def assume_role(role_arn, external_id = None, session_name = None):
@@ -55,21 +55,24 @@ def exec_command(arg_list):
 
 
 def envassume():
-    role_arn, external_id, arg_list = parse_arguments(sys.argv)
+    arg_lookup = parse_arguments(sys.argv)
 
-    credentials_lookup = assume_role(role_arn, external_id)
+    credentials_lookup = assume_role(arg_lookup.get('arn'), arg_lookup.get('external_id'))
 
     update_env(credentials_lookup)
 
-    exec_command(arg_list)
+    exec_command(arg_lookup['command'])
 
 
 def run():
     try:
         envassume()
 
-    except Exception as e:
-        print('Error({}) {}'.format(e.__class__.__name__, e), file = sys.stderr)
+    except EnvAssumeHelpException:
+        print_help()
+
+    except EnvAssumeException as e:
+        print_error(e)
         sys.exit(1)
 
     except KeyboardInterrupt:

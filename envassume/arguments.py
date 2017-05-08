@@ -58,6 +58,9 @@ def _match_option(arg, arg_list):
 
             raise EnvAssumeArgumentException('Invalid argument: {}'.format(arg))
 
+        elif arg == '--':
+            raise EnvAssumeMissingArnException('ARN not supplied')
+
     raise EnvAssumeArgumentException('Unknown argument: {}'.format(arg))
 
 
@@ -88,7 +91,7 @@ def parse_arguments(arg_list):
                 break
 
     # skip optional separator
-    if arg_list[0] == '--':
+    if arg_list and arg_list[0] == '--':
         _pop_argument(arg_list)
 
     if not arg_list:
