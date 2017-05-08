@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-envassume exceptions
+envassume usage
 """
 
 from __future__ import print_function
@@ -14,11 +14,14 @@ def print_help(short = False):
 optional arguments:
     -h, --help              show this help message and exit
     -i, --id EXTERNAL_ID    external id
-    ARN                     ARN to assume (required if not set by environment variable)
+    ARN                     AWS role ARN to assume (required if not set by environment variable)
 
 environment variables:
+    environment must contain valid AWS API credentials
+
     AWS_ASSUME_ROLE=ARN
         no options can be present before the command if this is defined
+
     AWS_ASSUME_ID=EXTERNAL_ID
 ''', file = sys.stderr)
 
