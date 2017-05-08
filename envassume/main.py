@@ -8,36 +8,8 @@ import sys
 import os
 from socket import gethostname
 import boto3
-
-
-class EnvAssumeException(Exception):
-    pass
-
-
-def pop_argument(arg_list):
-    try:
-        return arg_list.pop(0)
-
-    except IndexError:
-        raise EnvAssumeException('Not enough arguments')
-
-
-def parse_arguments(arg_list):
-    pop_argument(arg_list)
-
-    external_id = None
-    if arg_list[0] in ('-i', '--external-id'):
-        pop_argument(arg_list)
-        external_id = pop_argument(arg_list)
-
-    role_arn = os.environ.get('AWS_ASSUME_ROLE')
-    if not role_arn:
-        role_arn = pop_argument(arg_list)
-
-    if arg_list[0] == '--':
-        pop_argument(arg_list)
-
-    return role_arn, external_id, arg_list
+from .exceptions import *
+from .arguments import parse_arguments
 
 
 def assume_role(role_arn, external_id = None, session_name = None):
@@ -72,7 +44,7 @@ def update_env(credentials_lookup):
         os.environ[env_var_name] = credentials_lookup[credential_key]
 
 
-def run_command(arg_list):
+def exec_command(arg_list):
     try:
         os.execvpe(arg_list[0], arg_list, os.environ)
 
@@ -82,19 +54,19 @@ def run_command(arg_list):
     raise EnvAssumeException('Unable to run command {}'.format(arg_list[0]))
 
 
-def run():
+def envassume():
     role_arn, external_id, arg_list = parse_arguments(sys.argv)
 
     credentials_lookup = assume_role(role_arn, external_id)
 
     update_env(credentials_lookup)
 
-    run_command(arg_list)
+    exec_command(arg_list)
 
 
-def run_script():
+def run():
     try:
-        run()
+        envassume()
 
     except Exception as e:
         print('Error({}) {}'.format(e.__class__.__name__, e), file = sys.stderr)
@@ -102,3 +74,7 @@ def run_script():
 
     except KeyboardInterrupt:
         pass
+
+
+if __name__ == '__main__':
+    run()
