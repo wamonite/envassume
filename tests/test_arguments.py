@@ -52,3 +52,17 @@ def test_parse_args(arg_list, parse_args_result):
 def test_parse_args_errors(arg_list, exception):
     with pytest.raises(exception):
         parse_arguments(['arg0'] + arg_list)
+
+
+@pytest.mark.parametrize('env_var_list, parse_args_result', [
+    ([('AWS_ASSUME_ROLE', 'arn')], ParseArgsResult('arn', ['cmd'])),
+    ([('AWS_ASSUME_ROLE', 'arn'), ('AWS_ASSUME_ID', 'id')], ParseArgsResult('arn', ['cmd'], 'id')),
+])
+def test_parse_args_env_vars(env_var_list, parse_args_result, monkeypatch):
+    for env_var in env_var_list:
+        monkeypatch.setenv(env_var[0], env_var[1])
+    result = parse_arguments(['arg0', 'cmd'])
+    assert result.get('arn') == parse_args_result.arn
+    assert result.get('external_id') == parse_args_result.external_id
+    assert result.get('cache') == parse_args_result.cache
+    assert result.get('command') == parse_args_result.command
