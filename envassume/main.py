@@ -4,13 +4,14 @@ envassume
 """
 
 from __future__ import print_function
+import sys
 import os
 from socket import gethostname
 import boto3
 from botocore.exceptions import BotoCoreError
-from .exceptions import *
+from .exceptions import EnvAssumeException, EnvAssumeHelpException
 from .arguments import parse_arguments
-from .usage import *
+from .usage import print_help, print_error
 
 
 def assume_role(role_arn, external_id = None, session_name = None):

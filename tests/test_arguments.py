@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 from envassume.arguments import parse_arguments
-from envassume.exceptions import *
+from envassume.exceptions import EnvAssumeMissingArnException
 import pytest
 from attr import attrs, attrib, validators
 

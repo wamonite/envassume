@@ -6,7 +6,13 @@ envassume arguments
 from __future__ import print_function
 import os
 from attr import attrs, attrib
-from .exceptions import *
+from .exceptions import (
+    EnvAssumeHelpException,
+    EnvAssumeArgumentException,
+    EnvAssumeMissingArnException,
+    EnvAssumeMissingCommandException
+)
+
 
 @attrs
 class Env(object):

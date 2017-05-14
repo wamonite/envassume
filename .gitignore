@@ -7,3 +7,5 @@ __pycache__
 .tox
 .cache
 .idea
+build
+dist
