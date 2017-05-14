@@ -2,7 +2,12 @@
 
 from __future__ import print_function
 from envassume.arguments import parse_arguments
-from envassume.exceptions import EnvAssumeMissingArnException
+from envassume.exceptions import (
+    EnvAssumeMissingArnException,
+    EnvAssumeHelpException,
+    EnvAssumeArgumentException,
+    EnvAssumeMissingCommandException,
+)
 import pytest
 from attr import attrs, attrib, validators
 
@@ -35,6 +40,14 @@ def test_parse_args(arg_list, parse_args_result):
 @pytest.mark.parametrize('arg_list, exception', [
     ([], EnvAssumeMissingArnException),
     (['--'], EnvAssumeMissingArnException),
+    (['-i', 'id'], EnvAssumeMissingArnException),
+    (['-i', 'id', '--'], EnvAssumeMissingArnException),
+    (['-h'], EnvAssumeHelpException),
+    (['--help'], EnvAssumeHelpException),
+    (['-z'], EnvAssumeArgumentException),  # unknown
+    (['--ida='], EnvAssumeArgumentException),  # invalid
+    (['arn'], EnvAssumeMissingCommandException),
+    (['arn', '--'], EnvAssumeMissingCommandException),
 ])
 def test_parse_args_errors(arg_list, exception):
     with pytest.raises(exception):

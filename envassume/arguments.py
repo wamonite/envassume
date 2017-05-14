@@ -59,7 +59,7 @@ def _match_option(arg, arg_list):
 
         elif arg.startswith(option.arg):
             arg_split = arg.split('=', 1)
-            if len(arg_split) == 2:
+            if arg_split[0] == option.arg and len(arg_split) == 2:
                 return option.name, arg_split[1]
 
             raise EnvAssumeArgumentException('Invalid argument: {}'.format(arg))
