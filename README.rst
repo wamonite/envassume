@@ -1,6 +1,12 @@
 envassume
 =========
 
+.. image:: http://img.shields.io/pypi/v/envassume.svg
+    :target: https://pypi.python.org/pypi/envassume
+
+.. image:: https://travis-ci.org/wamonite/envassume.svg?branch=master
+    :target: https://travis-ci.org/wamonite/envassume
+
 Assume an AWS IAM role from AWS API credentials in environment variables.
 
 Usage
