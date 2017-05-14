@@ -1,7 +1,7 @@
 envassume
 =========
 
-.. image:: http://img.shields.io/pypi/v/envassume.svg
+.. image:: https://img.shields.io/pypi/v/envassume.svg
     :target: https://pypi.python.org/pypi/envassume
 
 .. image:: https://travis-ci.org/wamonite/envassume.svg?branch=master
