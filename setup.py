@@ -5,7 +5,7 @@ with open('README.rst', 'r') as file_object:
 
 setup(
     name = 'envassume',
-    version = '1.0.0',
+    version = '1.0.1',
     description = 'Assume an AWS IAM role from AWS API credentials in environment variables',
     long_description = readme,
     license = 'MIT',
@@ -13,7 +13,7 @@ setup(
     author_email = 'warren@wamonite.com',
     url = 'https://github.com/wamonite/envassume',
     classifiers = [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'Environment :: Console',
