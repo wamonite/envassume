@@ -26,7 +26,7 @@ setup(
     packages = ['envassume'],
     entry_points = dict(console_scripts = ['envassume=envassume.main:run']),
     install_requires = [
-        'boto3==1.5.18',
+        'boto3==1.5.19',
         'attrs==17.4.0'
     ],
     zip_safe = False
