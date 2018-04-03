@@ -1,4 +1,4 @@
-boto3==1.6.22
+boto3==1.6.23
 tox==3.0.0
 twine==1.11.0
 bumpversion==0.5.3
