@@ -10,9 +10,6 @@ envassume
 .. image:: https://codecov.io/gh/wamonite/envassume/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/wamonite/envassume
 
-.. image:: https://requires.io/github/wamonite/envassume/requirements.svg?branch=master
-    :target: https://requires.io/github/wamonite/envassume/requirements/?branch=master
-
 Assume an AWS IAM role from AWS API credentials in environment variables.
 
 Usage
