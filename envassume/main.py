@@ -34,8 +34,8 @@ def assume_role(role_arn, external_id = None, session_name = None):
     try:
         response = sts_client.assume_role(**request)
 
-    except BotoCoreError as e:
-        raise EnvAssumeException(e.message)
+    except BotoCoreError as ex:
+        raise EnvAssumeException('{}'.format(ex))
 
     return response.get('Credentials') or {}
 
@@ -54,8 +54,8 @@ def exec_command(arg_list):
     try:
         os.execvpe(arg_list[0], arg_list, os.environ)
 
-    except OSError as e:
-        raise EnvAssumeException('Unable to run command {}: {}'.format(arg_list[0], e))
+    except OSError as ex:
+        raise EnvAssumeException('Unable to run command {}: {}'.format(arg_list[0], ex))
 
     raise EnvAssumeException('Unable to run command {}'.format(arg_list[0]))
 
@@ -77,8 +77,8 @@ def run():
     except EnvAssumeHelpException:
         print_help()
 
-    except EnvAssumeException as e:
-        print_error(e)
+    except EnvAssumeException as ex:
+        print_error(ex)
         sys.exit(1)
 
     except KeyboardInterrupt:

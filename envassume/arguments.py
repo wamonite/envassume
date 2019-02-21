@@ -16,6 +16,7 @@ from .exceptions import (
 
 @attrs
 class Env(object):
+    # pylint: disable=too-few-public-methods
     name = attrib()
     var = attrib()
 
@@ -28,6 +29,7 @@ ENV_LIST = (
 
 @attrs
 class Option(object):
+    # pylint: disable=too-few-public-methods
     name = attrib()
     arg_short = attrib()
     arg = attrib()
@@ -48,7 +50,7 @@ def _pop_argument(arg_list):
 
 def _match_option(arg, arg_list):
     for option in OPTION_LIST:
-        if arg == '-h' or arg == '--help':
+        if arg in ('-h', '--help'):
             raise EnvAssumeHelpException
 
         elif arg == option.arg_short:
