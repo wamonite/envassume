@@ -21,13 +21,13 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
-        'Topic :: Utilities'
+        'Topic :: Utilities',
     ],
     packages = ['envassume'],
     entry_points = dict(console_scripts = ['envassume=envassume.main:run']),
     install_requires = [
         'boto3',
-        'attrs'
+        'attrs',
     ],
-    zip_safe = False
+    zip_safe = False,
 )

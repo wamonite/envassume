@@ -10,7 +10,7 @@ from .exceptions import (
     EnvAssumeHelpException,
     EnvAssumeArgumentException,
     EnvAssumeMissingArnException,
-    EnvAssumeMissingCommandException
+    EnvAssumeMissingCommandException,
 )
 
 

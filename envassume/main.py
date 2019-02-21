@@ -23,7 +23,7 @@ def assume_role(role_arn, external_id = None, session_name = None):
 
     request = {
         'RoleArn': role_arn,
-        'RoleSessionName': session_name
+        'RoleSessionName': session_name,
     }
 
     if external_id:
