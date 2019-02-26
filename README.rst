@@ -16,11 +16,11 @@ envassume
 .. image:: https://codecov.io/gh/wamonite/envassume/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/wamonite/envassume
 
-Assume an AWS IAM role from AWS API credentials in environment variables and execute a command with the assumed credentials (similar to envdir_).
+Assume an AWS IAM role and execute a command with the assumed credentials. AWS API credentials to assume the role must be set as environment variables, and the command and arguments are executed in the same manner as envdir_.
 
-.. _envdir: https://cr.yp.to/daemontools/envdir.html
+.. _envdir: https://envdir.readthedocs.io/en/latest/
 
-`envassume` takes the effort out of assuming an AWS role from the command-line and copying/pasting the returned credentials into environment variables to run a script. If you often need to do this:-
+``envassume`` takes the effort out of assuming an AWS role from the command-line and copying/pasting the returned credentials to run a command. If you often need to do this:-
 
 ::
 
