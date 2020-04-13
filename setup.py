@@ -5,7 +5,7 @@ with open('README.rst', 'r') as file_object:
 
 setup(
     name = 'envassume',
-    version = '1.0.6',
+    version = '1.0.7',
     description = 'Assume an AWS IAM role and execute a command with the assumed credentials',
     long_description = readme,
     license = 'MIT',
