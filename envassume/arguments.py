@@ -53,20 +53,20 @@ def _match_option(arg, arg_list):
         if arg in ('-h', '--help'):
             raise EnvAssumeHelpException
 
-        elif arg == option.arg_short:
+        if arg == option.arg_short:
             return option.name, _pop_argument(arg_list)
 
-        elif arg == option.arg:
+        if arg == option.arg:
             return option.name, _pop_argument(arg_list)
 
-        elif arg.startswith(option.arg):
+        if arg.startswith(option.arg):
             arg_split = arg.split('=', 1)
             if arg_split[0] == option.arg and len(arg_split) == 2:
                 return option.name, arg_split[1]
 
             raise EnvAssumeArgumentException('Invalid argument: {}'.format(arg))
 
-        elif arg == '--':
+        if arg == '--':
             raise EnvAssumeMissingArnException('ARN not supplied')
 
     raise EnvAssumeArgumentException('Unknown argument: {}'.format(arg))
