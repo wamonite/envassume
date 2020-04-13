@@ -3,7 +3,7 @@
 envassume arguments
 """
 
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 import os
 from attr import attrs, attrib
 from .exceptions import (

@@ -3,7 +3,7 @@
 envassume
 """
 
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 import sys
 import os
 from socket import gethostname

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 import pytest
 import mock
 from envassume.usage import print_help, print_error

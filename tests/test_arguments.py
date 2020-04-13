@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+from __future__ import print_function, absolute_import
 from envassume.arguments import parse_arguments
 from envassume.exceptions import (
     EnvAssumeMissingArnException,
